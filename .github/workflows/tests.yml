@@ -1,0 +1,21 @@
+name: Unit Testing
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create Output dir
+      run: mkdir Out
+    - name: Build
+      run: swift build --verbose
+    - name: Run tests
+      run: swift test --verbose
