@@ -25,11 +25,15 @@ let package = Package(
             name: "Utils",
             dependencies: []),
         .target(
-            name: "SwiftRT",
+            name: "RayTracing",
             dependencies: ["Math", "Utils"]),
-        //.testTarget(
-        //    name: "SwiftRTTests",
-        //    dependencies: ["SwiftRT"]),
+        .target(
+            name: "SwiftRT",
+            dependencies: ["RayTracing", "Math", "Utils"]),
+        // TEST TARGETS
+        .testTarget(
+            name: "RayTracingTests",
+            dependencies: ["RayTracing", "Math", "Utils"]),
         .testTarget(
             name: "MathTests",
             dependencies: ["Math"]),

@@ -1,5 +1,6 @@
 import XCTest
-@testable import Utils
+import struct Utils.Pixel8
+@testable import class Utils.ImagePPM
 
 final class ImagePPMTests: XCTestCase
 {
@@ -38,12 +39,12 @@ final class ImagePPMTests: XCTestCase
     {
         let img = ImagePPM( width: 256, height: 256 )
         img[128,128] = Pixel8.white()
-        img.writeToFile( iPath: testOutPath )
+        img.writeToFile( at: testOutPath )
 
         XCTAssert(FileManager.default.fileExists( atPath: testOutPath ),
                   "Image file wasn't created.")
 
-        let img2 = ImagePPM.fromFile( iPath: testOutPath )
+        let img2 = ImagePPM.fromFile( at: testOutPath )
 
         XCTAssert( img2 != nil, "Image failed loading" )
 

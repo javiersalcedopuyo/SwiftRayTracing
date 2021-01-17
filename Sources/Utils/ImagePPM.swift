@@ -1,4 +1,5 @@
 import Foundation
+import Math
 
 public struct Pixel8 : Equatable
 {
@@ -9,6 +10,20 @@ public struct Pixel8 : Equatable
     static func black() -> Pixel8 { Pixel8( r: 0,   g: 0,   b: 0   ) }
     static func white() -> Pixel8 { Pixel8( r: 255, g: 255, b: 255 ) }
 
+    public init (r: UInt8, g: UInt8, b: UInt8)
+    {
+        self.r = r
+        self.g = g
+        self.b = b
+    }
+
+    public init (fromVec3 vec: Vec3)
+    {
+        self.r = UInt8(vec[0] * 100)
+        self.g = UInt8(vec[1] * 100)
+        self.b = UInt8(vec[2] * 100)
+    }
+
     subscript(index: Int) -> UInt8
     {
         // TODO: throws
@@ -17,14 +32,10 @@ public struct Pixel8 : Equatable
             assert(index < 3, "ERROR: Index \(index) out of bounds")
             switch index
             {
-                case 0: 
-                    return self.r
-                case 1: 
-                    return self.g
-                case 2: 
-                    return self.b
-                default: 
-                    return self.r
+                case 0:  return self.r
+                case 1:  return self.g
+                case 2:  return self.b
+                default: return self.r
             }
         }
         set(newVal)
@@ -32,14 +43,10 @@ public struct Pixel8 : Equatable
             assert(index < 3, "ERROR: Index \(index) out of bounds")
             switch index
             {
-                case 0: 
-                    self.r = newVal
-                case 1: 
-                    self.g = newVal
-                case 2: 
-                    self.b = newVal
-                default: 
-                    self.r = newVal
+                case 0:  self.r = newVal
+                case 1:  self.g = newVal
+                case 2:  self.b = newVal
+                default: self.r = newVal
             }
         }
     }
@@ -56,6 +63,14 @@ public class ImagePPM
         self.width  = width
         self.height = height
         self.pixels = Array<Pixel8>.init(repeating: Pixel8.black(),
+                                         count:     Int(width * height))
+    }
+
+    public init(width: UInt, height: UInt, color: Vec3)
+    {
+        self.width  = width
+        self.height = height
+        self.pixels = Array<Pixel8>.init(repeating: Pixel8(fromVec3: color),
                                          count:     Int(width * height))
     }
 
@@ -82,7 +97,7 @@ public class ImagePPM
         }
     }
 
-    public static func fromFile(iPath: String) -> ImagePPM?
+    public static func fromFile(at iPath: String) -> ImagePPM?
     {
         guard let file = FileHandle( forReadingAtPath: iPath ) else { return nil }
 
@@ -97,7 +112,7 @@ public class ImagePPM
                         data:   rawData[startIdx+1..<rawData.count])
     }
 
-    subscript(x: UInt, y: UInt) -> Pixel8
+    public subscript(x: UInt, y: UInt) -> Pixel8
     {
         // TODO: Throws
         get
@@ -175,7 +190,7 @@ public class ImagePPM
         return Data.init( result )
     }
 
-    func writeToFile(iPath: String)
+    public func writeToFile(at iPath: String)
     {
         var d = "P6 \(self.width) \(self.height) 255\n".data( using: .utf8 )!
         d.append( self.getData() )
