@@ -3,9 +3,9 @@ import Math
 
 public struct Pixel8 : Equatable
 {
-    var r: UInt8
-    var g: UInt8
-    var b: UInt8
+    public var r: UInt8
+    public var g: UInt8
+    public var b: UInt8
 
     static func black() -> Pixel8 { Pixel8( r: 0,   g: 0,   b: 0   ) }
     static func white() -> Pixel8 { Pixel8( r: 255, g: 255, b: 255 ) }
@@ -54,8 +54,9 @@ public struct Pixel8 : Equatable
 
 public class ImagePPM
 {
-    let width:  UInt
-    let height: UInt
+    public let width:  UInt
+    public let height: UInt
+
     var pixels: Array<Pixel8>
 
     public init(width: UInt, height: UInt)
@@ -112,23 +113,31 @@ public class ImagePPM
                         data:   rawData[startIdx+1..<rawData.count])
     }
 
-    public subscript(x: UInt, y: UInt) -> Pixel8
+    public func at(col: UInt, row: UInt) -> Pixel8
     {
-        // TODO: Throws
-        get
-        {
-            assert(x<self.width, "ERROR: X \(x) is out of bounds")
-            assert(y<self.width, "ERROR: Y \(y) is out of bounds")
-            let i = self.getIndex(x:x, y:y)
-            return self.pixels[i]
-        }
-        set(newVal)
-        {
-            assert(x<self.width, "ERROR: X \(x) is out of bounds")
-            assert(y<self.width, "ERROR: Y \(y) is out of bounds")
-            let i = self.getIndex(x:x, y:y)
-            self.pixels[i] = newVal
-        }
+        assert(col<self.width,  "ERROR: X \(col) is out of bounds")
+        assert(row<self.height, "ERROR: Y \(row) is out of bounds")
+
+        let i = self.getIndex(x:col, y:row)
+        return self.pixels[i]
+    }
+
+    public func set(col: UInt, row: UInt, color: Pixel8)
+    {
+        assert(col<self.width,  "ERROR: X \(col) is out of bounds")
+        assert(row<self.height, "ERROR: Y \(row) is out of bounds")
+
+        let i = self.getIndex(x:col, y:row)
+        self.pixels[i] = color
+    }
+
+    public func set(col: UInt, row: UInt, color: Vec3)
+    {
+        assert(col<self.width,  "ERROR: X \(col) is out of bounds")
+        assert(row<self.height, "ERROR: Y \(row) is out of bounds")
+
+        let i = self.getIndex(x:col, y:row)
+        self.pixels[i] = Pixel8(fromVec3: color)
     }
 
     static func parseHeader(iData: Data) -> (width: UInt, height: UInt)

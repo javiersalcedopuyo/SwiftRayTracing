@@ -38,7 +38,7 @@ final class ImagePPMTests: XCTestCase
     func testWriteReadFile()
     {
         let img = ImagePPM( width: 256, height: 256 )
-        img[128,128] = Pixel8.white()
+        img.set(col: 128, row: 128, color: Pixel8.white())
         img.writeToFile( at: testOutPath )
 
         XCTAssert(FileManager.default.fileExists( atPath: testOutPath ),
@@ -48,7 +48,7 @@ final class ImagePPMTests: XCTestCase
 
         XCTAssert( img2 != nil, "Image failed loading" )
 
-        XCTAssertEqual(img2![128,128],
+        XCTAssertEqual(img2!.at(col: 128, row: 128),
                        Pixel8.white(),
                        "Saved and loaded image has the wrong color")
     }

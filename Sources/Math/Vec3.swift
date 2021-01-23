@@ -11,8 +11,8 @@ public struct Vec3 : Equatable
         self.z = z
     }
     // Initializers
-    static func zero() -> Vec3 { Vec3(x: 0.0, y: 0.0, z: 0.0) }
-    static func one()  -> Vec3 { Vec3(x: 1.0, y: 1.0, z: 1.0) }
+    public static func zero() -> Vec3 { Vec3(x: 0.0, y: 0.0, z: 0.0) }
+    public static func one()  -> Vec3 { Vec3(x: 1.0, y: 1.0, z: 1.0) }
 
     // Operators
     public subscript(index: UInt) -> Double
@@ -49,18 +49,39 @@ public struct Vec3 : Equatable
         left.z == right.z
     }
 
-    public static prefix func -(right: Vec3) -> Vec3
+    public static prefix func -(right: Vec3) -> Self
     {
         Vec3(x: -right.x,
              y: -right.y,
              z: -right.z)
     }
 
-    public static func /(left: Vec3, right: Double) -> Vec3
+    public static func +(left: Vec3, right: Vec3) -> Self
+    {
+        Vec3(x: left.x + right.x,
+             y: left.y + right.y,
+             z: left.z + right.z)
+    }
+
+    public static func -(left: Vec3, right: Vec3) -> Self
+    {
+        Vec3(x: left.x - right.x,
+             y: left.y - right.y,
+             z: left.z - right.z)
+    }
+
+    public static func /(left: Self, right: Double) -> Self
     {
         Vec3(x: left.x / right,
              y: left.y / right,
              z: left.z / right)
+    }
+
+    public static func *(left: Self, right: Double) -> Self
+    {
+        Vec3(x: left.x * right,
+             y: left.y * right,
+             z: left.z * right)
     }
 
     public func dot(_ v: Vec3) -> Double
@@ -78,4 +99,12 @@ public struct Vec3 : Equatable
     public func norm2()      -> Double { self.dot(self) }
     public func norm()       -> Double { self.norm2().squareRoot() }
     public func normalized() -> Vec3   { self / self.norm() }
+
+    // Methods
+    public static func lerp(_ a: Vec3, _ b: Vec3, t: Double) -> Vec3
+    {
+        if      t >= 1.0 { return b }
+        else if t <= 0.0 { return a }
+        else             { return a * (1.0-t) + b * t }
+    }
 }
