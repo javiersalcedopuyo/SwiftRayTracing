@@ -1,8 +1,8 @@
 public struct Vec3 : Equatable
 {
-    var x: Double
-    var y: Double
-    var z: Double
+    public var x: Double
+    public var y: Double
+    public var z: Double
 
     public init(x: Double, y: Double, z: Double)
     {
@@ -101,7 +101,7 @@ public struct Vec3 : Equatable
     public func normalized() -> Vec3   { self / self.norm() }
 
     // Methods
-    public static func lerp(_ a: Vec3, _ b: Vec3, t: Double) -> Vec3
+    public static func lerp(from a: Vec3, to b: Vec3, t: Double) -> Vec3
     {
         if      t >= 1.0 { return b }
         else if t <= 0.0 { return a }

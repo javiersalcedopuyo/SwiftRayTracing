@@ -1,12 +1,12 @@
 import XCTest
 import struct Utils.Pixel8
+import Math
 import var RayTracing.SKY_COLOR_1
 @testable import class RayTracing.RayTracer
 
 final class RayTracerTests: XCTestCase
 {
     let COLOR_EPSILON: Int8 = 3 // ~ 1%
-    let SKY_COLOR = Pixel8(fromVec3: SKY_COLOR_1)
 
     func comparePixel8s(a: Pixel8, b: Pixel8, accuracy: Int8) -> Bool
     {
@@ -19,11 +19,13 @@ final class RayTracerTests: XCTestCase
 
     func testEmptyRenderCreatesImageOfCorrectColor()
     {
-        let rt    = RayTracer(w:101, h:100)
+        let rt    = RayTracer(w:64, h:64)
         let image = rt.render()
-        let pixel = image.at(col: 50, row: 0)
+        let pixel = image.at(col: 32, row: 32)
 
-        XCTAssert(comparePixel8s(a: pixel, b: SKY_COLOR, accuracy: COLOR_EPSILON),
-                  "\(pixel) != \(SKY_COLOR) with accuracy \(COLOR_EPSILON)")
+        let EXPECTED_MIDDLE_COLOR = Pixel8(fromVec3: Vec3.lerp(from: Vec3.one(), to: SKY_COLOR_1, t: 0.5))
+
+        XCTAssert(comparePixel8s(a: pixel, b: EXPECTED_MIDDLE_COLOR, accuracy: COLOR_EPSILON),
+                  "\(pixel) != \(EXPECTED_MIDDLE_COLOR) with accuracy \(COLOR_EPSILON)")
     }
 }

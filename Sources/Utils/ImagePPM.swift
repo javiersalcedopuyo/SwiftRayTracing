@@ -19,9 +19,9 @@ public struct Pixel8 : Equatable
 
     public init (fromVec3 vec: Vec3)
     {
-        self.r = UInt8(vec[0] * 100)
-        self.g = UInt8(vec[1] * 100)
-        self.b = UInt8(vec[2] * 100)
+        self.r = UInt8(vec.x * 255.0)
+        self.g = UInt8(vec.y * 255.0)
+        self.b = UInt8(vec.z * 255.0)
     }
 
     subscript(index: Int) -> UInt8
