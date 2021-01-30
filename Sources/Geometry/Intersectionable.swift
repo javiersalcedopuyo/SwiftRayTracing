@@ -1,7 +1,7 @@
 import struct Math.Vec3
 import struct Math.Ray
 
-public typealias HitRecord = (normal: Vec3, distance: Double)
+public typealias HitRecord = (normal: Vec3, distance: Double, isInnerFace: Bool)
 
 public protocol Intersectionable
 {

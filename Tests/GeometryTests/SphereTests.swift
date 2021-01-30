@@ -70,4 +70,20 @@ final class SphereTests: XCTestCase
 
         XCTAssertEqual(n.norm2(), 1.0)
     }
+
+    func testInnerNormal()
+    {
+        let s = Sphere(pos: Vec3.zero(), rad: 1.0)
+        var r = Ray(origin: Vec3(x:0.1, y:0.0, z:0.0), direction: Vec3.one())
+
+        let h = s.hit(ray: &r, minD: 0.0, maxD: 2.0)
+
+        XCTAssert(h != nil, "The ray didn't hit the sphere!")
+        if h == nil { return }
+
+        XCTAssert(h!.distance > 0.0, "It hitted behind! \(h!.distance)")
+
+        XCTAssert(h!.isInnerFace, "The ray didn't hit the inside of the sphere!")
+        XCTAssert(h!.normal.dot(r.direction) < 0.0, "The normal points outwards!")
+    }
 }
