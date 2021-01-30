@@ -6,11 +6,11 @@ final class CameraTests: XCTestCase
 {
     func testInitialLoweLeftCornerPosition()
     {
-        let cam = Camera(w:128, h:128)
+        let cam = Camera(w:128, h:128) // Default position is (0,0,0)
 
-        XCTAssert( cam.lower_left_corner.x < 0, "Lower Left Corner is on the right!")
-        XCTAssert( cam.lower_left_corner.y < 0, "Lower Left Corner is over the camera!")
-        XCTAssert( cam.lower_left_corner.z > 0, "Lower Left Corner is behind the camera!" )
+        XCTAssert(cam.lower_left_corner.dot(cam.right)   < 0.0, "Lower Left Corner is on the right!")
+        XCTAssert(cam.lower_left_corner.dot(cam.up)      < 0.0, "Lower Left Corner is over the camera!")
+        XCTAssert(cam.lower_left_corner.dot(cam.forward) > 0.0, "Lower Left Corner is behind the camera!")
     }
 
     func testUpdateLowerLeftCorner()
@@ -32,9 +32,7 @@ final class CameraTests: XCTestCase
 
         let ray = cam.get_ray(u:u, v:v)
 
-        XCTAssertEqual(ray.direction.x, 0.0, "Ray not centered on X!")
-        XCTAssertEqual(ray.direction.y, 0.0, "Ray not centered on Y!")
-        XCTAssertEqual(ray.direction.z, 1.0, "Ray going BACK!")
+        XCTAssertEqual(ray.direction, cam.forward)
     }
 
     func testRayToLowLeftCorner()
@@ -45,8 +43,8 @@ final class CameraTests: XCTestCase
 
         let ray = cam.get_ray(u:u, v:v)
 
-        XCTAssert(ray.direction.x < 0.0, "Ray going RIGHT!")
-        XCTAssert(ray.direction.y < 0.0, "Ray going UP!")
-        XCTAssert(ray.direction.z > 0.0, "Ray going BACK!")
+        XCTAssert(ray.direction.dot(cam.right)   < 0.0, "Ray going RIGHT!")
+        XCTAssert(ray.direction.dot(cam.up)      < 0.0, "Ray going UP!")
+        XCTAssert(ray.direction.dot(cam.forward) > 0.0, "Ray going BACK!")
     }
 }

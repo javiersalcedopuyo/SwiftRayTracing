@@ -53,4 +53,10 @@ final class Vec3Tests: XCTestCase
 
         XCTAssertEqual( n.norm(), 1.0 )
     }
+
+    func testNormalizedZero()
+    {
+        let a = Vec3.zero()
+        XCTAssertEqual(a.normalized(), Vec3.zero())
+    }
 }

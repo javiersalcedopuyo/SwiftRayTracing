@@ -1,6 +1,5 @@
 import XCTest
-import Math
-@testable import struct RayTracing.Ray
+@testable import Math
 
 final class RayTests: XCTestCase
 {

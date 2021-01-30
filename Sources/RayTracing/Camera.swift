@@ -2,17 +2,16 @@ import Math
 
 typealias Dimensions = (w: Double, h: Double)
 
-class Camera
+public class Camera
 {
     public private(set) var position:          Vec3
-    public private(set) var lower_left_corner: Vec3 // World space
+    public private(set) var up:                Vec3
+    public private(set) var right:             Vec3
+    public private(set) var forward:           Vec3
 
-    public let up:      Vec3
-    public let right:   Vec3
-    public let forward: Vec3
-
-    let viewport: Dimensions
-    let focalLen: Double
+    var lower_left_corner: Vec3 // World space
+    let viewport:          Dimensions
+    let focalLen:          Double
 
     public init(w: UInt, h: UInt)
     {
@@ -26,8 +25,8 @@ class Camera
         self.lower_left_corner = Vec3.zero()
 
         self.up      = Vec3(x:0.0, y:1.0, z:0.0)
-        self.right   = Vec3(x:1.0, y:0.0, z:0.0)
-        self.forward = Vec3(x:0.0, y:0.0, z:-1.0)
+        self.right   = Vec3(x:-1.0, y:0.0, z:0.0)
+        self.forward = Vec3(x:0.0, y:0.0, z:1.0)
 
         self.update_lower_left_corner()
     }
@@ -36,6 +35,11 @@ class Camera
     {
         self.position = inNewPos;
         self.update_lower_left_corner()
+    }
+
+    public func look_at(_ iTarget: Vec3)
+    {
+        // TODO:
     }
 
     public func get_ray(u: Double, v: Double) -> Ray
@@ -50,9 +54,9 @@ class Camera
 
     func update_lower_left_corner()
     {
-        let hrz = self.right    * self.viewport.w
-        let vrt = self.up       * self.viewport.h
-        let dpt = -self.forward * self.focalLen
+        let hrz = self.right  * self.viewport.w
+        let vrt = self.up      * self.viewport.h
+        let dpt = self.forward * self.focalLen
 
         self.lower_left_corner = self.position - hrz*0.5 - vrt*0.5 + dpt
     }

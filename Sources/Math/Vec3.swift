@@ -96,9 +96,15 @@ public struct Vec3 : Equatable
              z: self.x * v.y - self.y * v.x)
     }
 
-    public func norm2()      -> Double { self.dot(self) }
-    public func norm()       -> Double { self.norm2().squareRoot() }
-    public func normalized() -> Vec3   { self / self.norm() }
+    public func norm2() -> Double { self.dot(self) }
+    public func norm()  -> Double { self.norm2().squareRoot() }
+
+    public func normalized() -> Vec3
+    {
+        let n = self.norm()
+        return n != 0 ? self / n
+                      : Vec3.zero()
+    }
 
     // Methods
     public static func lerp(from a: Vec3, to b: Vec3, t: Double) -> Vec3

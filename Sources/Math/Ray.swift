@@ -1,9 +1,7 @@
-import Math
-
-struct Ray
+public struct Ray
 {
-    let origin:    Vec3
-    let direction: Vec3
+    public let origin:    Vec3
+    public let direction: Vec3
 
     public init()
     {
