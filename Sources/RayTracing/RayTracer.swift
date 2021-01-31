@@ -1,6 +1,6 @@
 import Utils
 import Math
-import Geometry
+import RenderableObjects
 
 let SKY_COLOR_1 = Vec3(x: 0.0, y: 0.3, z: 1.0)
 

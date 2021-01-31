@@ -3,7 +3,7 @@ import Foundation
 import Math
 import Utils
 import RayTracing
-import Geometry
+import RenderableObjects
 
 let rt = RayTracer(w:800, h:600)
 

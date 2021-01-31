@@ -1,6 +1,6 @@
 import XCTest
 import Math
-@testable import class Geometry.Sphere
+@testable import class RenderableObjects.Sphere
 
 final class SphereTests: XCTestCase
 {
