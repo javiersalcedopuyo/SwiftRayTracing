@@ -1,16 +1,35 @@
+import Foundation // For trigonometric functions
+
 public struct Vec3 : Equatable
 {
     public var x: Double
     public var y: Double
     public var z: Double
 
+    // Initializers
     public init(x: Double, y: Double, z: Double)
     {
         self.x = x
         self.y = y
         self.z = z
     }
-    // Initializers
+
+    public static func random(min: Double, max: Double) -> Vec3
+    {
+        Vec3(x: Double.random(in: min...max),
+             y: Double.random(in: min...max),
+             z: Double.random(in: min...max))
+    }
+
+    public static func randomUnit() -> Vec3
+    {
+        let a = Double.random(in: 0.0...1.0) * TAU
+        let z = -1.0 + Double.random(in: 0.0...1.0) * 2.0
+        let r = (1.0 - z*z).squareRoot()
+
+        return Vec3(x: r*cos(a), y: r*sin(a), z:z);
+    }
+
     public static func zero() -> Vec3 { Vec3(x: 0.0, y: 0.0, z: 0.0) }
     public static func one()  -> Vec3 { Vec3(x: 1.0, y: 1.0, z: 1.0) }
 
@@ -84,6 +103,27 @@ public struct Vec3 : Equatable
              z: left.z * right)
     }
 
+    public static func *(left: Self, right: Self) -> Self
+    {
+        Vec3(x: left.x * right.x,
+             y: left.y * right.y,
+             z: left.z * right.z)
+    }
+
+    public static func *=(left: inout Self, right: Double)
+    {
+        left.x *= right
+        left.y *= right
+        left.z *= right
+    }
+
+    public static func *=(left: inout Self, right: Self)
+    {
+        left.x *= right.x
+        left.y *= right.y
+        left.z *= right.z
+    }
+
     public func dot(_ v: Vec3) -> Double
     {
         self.x * v.x + self.y * v.y + self.z * v.z
@@ -112,5 +152,22 @@ public struct Vec3 : Equatable
         if      t >= 1.0 { return b }
         else if t <= 0.0 { return a }
         else             { return a * (1.0-t) + b * t }
+    }
+
+    public static func normalToColor(_ n: Vec3) -> Vec3
+    {
+        // We assume the normal is already a unit vector
+        let r = n.x + 1.0
+        let g = n.y + 1.0
+        let b = n.z + 1.0
+
+        return Vec3(x:r, y:g, z:b) * 0.5
+    }
+
+    mutating public func clamp(min minVal: Double, max maxVal: Double)
+    {
+        self.x = min( max(self.x, minVal), maxVal )
+        self.y = min( max(self.y, minVal), maxVal )
+        self.z = min( max(self.z, minVal), maxVal )
     }
 }

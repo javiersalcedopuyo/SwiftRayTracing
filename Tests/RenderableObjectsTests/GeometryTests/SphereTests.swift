@@ -7,10 +7,10 @@ final class SphereTests: XCTestCase
     func testMissRayIntersection()
     {
         let sphere = Sphere(pos: Vec3.zero(), rad: 0.1)
-        var ray    = Ray(origin:    Vec3(x:0.0, y:0.0, z:-1.0),
+        let ray    = Ray(origin:    Vec3(x:0.0, y:0.0, z:-1.0),
                          direction: Vec3(x:0.0, y:1.0, z:0.0))
 
-        let hit = sphere.hit(ray: &ray, minD: 0.0, maxD: 10.0)
+        let hit = sphere.hit(ray: ray, minD: 0.0, maxD: 10.0)
 
         XCTAssert(hit == nil, "ERROR: The ray hitted the spehere at \(ray.at(hit!.distance))")
     }
@@ -18,10 +18,10 @@ final class SphereTests: XCTestCase
     func testRayMissesSphereBehindCamera()
     {
         let sphere = Sphere(pos: Vec3.zero(), rad: 0.1)
-        var ray    = Ray(origin:    Vec3(x:0.0, y:0.0, z:1.0),
+        let ray    = Ray(origin:    Vec3(x:0.0, y:0.0, z:1.0),
                          direction: Vec3(x:0.0, y:0.0, z:1.0))
 
-        let hit = sphere.hit(ray: &ray, minD: 0.0, maxD: 10.0)
+        let hit = sphere.hit(ray: ray, minD: 0.0, maxD: 10.0)
 
         XCTAssert(hit == nil, "ERROR: The ray hitted the spehere at \(ray.at(hit!.distance))")
     }
@@ -29,10 +29,10 @@ final class SphereTests: XCTestCase
     func testRayIntersection()
     {
         let sphere = Sphere(pos: Vec3.zero(), rad: 0.1)
-        var ray    = Ray(origin:    Vec3(x:0.0, y:0.0, z:-1.0),
+        let ray    = Ray(origin:    Vec3(x:0.0, y:0.0, z:-1.0),
                          direction: Vec3(x:0.0, y:0.0, z:1.0))
 
-        let hit = sphere.hit(ray: &ray, minD: 0.0, maxD: 10.0)
+        let hit = sphere.hit(ray: ray, minD: 0.0, maxD: 10.0)
 
         XCTAssert(hit != nil, "ERROR: The ray didn't hit the spehere.")
     }
@@ -40,10 +40,10 @@ final class SphereTests: XCTestCase
     func testRayIntersectionDistance()
     {
         let sphere = Sphere(pos: Vec3.zero(), rad: 0.1)
-        var ray    = Ray(origin:    Vec3(x:0.0, y:0.0, z:-1.0),
+        let ray    = Ray(origin:    Vec3(x:0.0, y:0.0, z:-1.0),
                          direction: Vec3(x:0.0, y:0.0, z:1.0))
 
-        let hit = sphere.hit(ray: &ray, minD: 0.0, maxD: 10.0)
+        let hit = sphere.hit(ray: ray, minD: 0.0, maxD: 10.0)
 
         XCTAssert(hit != nil, "ERROR: The ray didn't hit the spehere.")
         XCTAssertEqual(hit!.distance, 0.9, accuracy: 0.0001)
@@ -52,10 +52,10 @@ final class SphereTests: XCTestCase
     func testRayIntersectionNormal()
     {
         let sphere = Sphere(pos: Vec3.zero(), rad: 0.1)
-        var ray    = Ray(origin:    Vec3(x:0.0, y:0.0, z:-1.0),
+        let ray    = Ray(origin:    Vec3(x:0.0, y:0.0, z:-1.0),
                          direction: Vec3(x:0.0, y:0.0, z:1.0))
 
-        let hit = sphere.hit(ray: &ray, minD: 0.0, maxD: 10.0)
+        let hit = sphere.hit(ray: ray, minD: 0.0, maxD: 10.0)
         XCTAssert(hit != nil, "ERROR: The ray didn't hit the spehere.")
 
         let expectedNormal = (ray.origin - sphere.position).normalized()
@@ -74,9 +74,9 @@ final class SphereTests: XCTestCase
     func testInnerNormal()
     {
         let s = Sphere(pos: Vec3.zero(), rad: 1.0)
-        var r = Ray(origin: Vec3(x:0.1, y:0.0, z:0.0), direction: Vec3.one())
+        let r = Ray(origin: Vec3(x:0.1, y:0.0, z:0.0), direction: Vec3.one())
 
-        let h = s.hit(ray: &r, minD: 0.0, maxD: 2.0)
+        let h = s.hit(ray: r, minD: 0.0, maxD: 2.0)
 
         XCTAssert(h != nil, "The ray didn't hit the sphere!")
         if h == nil { return }
