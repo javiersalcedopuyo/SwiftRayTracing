@@ -29,8 +29,9 @@ public class Sphere : Intersectionable
         if oc2 < self.radius
         { // The ray originates from inside the sphere
             let d = self.radius - oc2.squareRoot()
-            let n = -self.getNormal(at: iRay.at(d))
-            return HitRecord(n, d, true)
+            let p = iRay.at(d)
+            let n = -self.getNormal(at: p)
+            return HitRecord(n, p, d, true)
         }
 
         // NOTE: Since ray directions are normalized, a = iRay.direction.norm2() == 1.0
@@ -45,7 +46,8 @@ public class Sphere : Intersectionable
 
         if d < iMinDist || d > iMaxDist { return nil }
 
-        var n           = self.getNormal(at: iRay.at(d))
+        let p           = iRay.at(d)
+        var n           = self.getNormal(at: p)
         var isInnerFace = false
 
         if iRay.direction.dot(n) > 0.0
@@ -54,7 +56,7 @@ public class Sphere : Intersectionable
             isInnerFace = true
         }
 
-        return HitRecord(n, d, isInnerFace)
+        return HitRecord(n, p, d, isInnerFace)
     }
 
     public func getNormal(at iPosition: Vec3) -> Vec3
