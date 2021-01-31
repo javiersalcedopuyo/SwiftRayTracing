@@ -3,7 +3,7 @@ import struct Math.Ray
 
 public typealias HitRecord = (normal: Vec3, distance: Double, isInnerFace: Bool)
 
-public protocol Intersectionable
+public protocol Intersectionable : AnyObject
 {
     var position: Vec3 {get set}
 

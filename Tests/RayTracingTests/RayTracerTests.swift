@@ -17,8 +17,7 @@ final class RayTracerTests: XCTestCase
         return r<=accuracy && g<=accuracy && b<=accuracy
     }
 
-    // TODO: Restore when the scene can be configured
-    func SKIP_testEmptyRenderCreatesImageOfCorrectColor()
+    func testEmptyRenderCreatesImageOfCorrectColor()
     {
         let rt    = RayTracer(w:64, h:64)
         let image = rt.render()
@@ -29,4 +28,8 @@ final class RayTracerTests: XCTestCase
         XCTAssert(comparePixel8s(a: pixel, b: EXPECTED_MIDDLE_COLOR, accuracy: COLOR_EPSILON),
                   "\(pixel) != \(EXPECTED_MIDDLE_COLOR) with accuracy \(COLOR_EPSILON)")
     }
+
+    // TODO: Implement whith materials
+    //func testRenderRedBall()
+    //func testRenderRedBallWithBlueBallOccluded
 }
