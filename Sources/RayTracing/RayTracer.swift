@@ -7,6 +7,12 @@ let MAX_DEPTH: Int = 50
 let FAR            = 10.0
 let SHADOW_BIAS    = 0.001
 
+#if DEBUG
+let MSAA_SAMPLES = 1
+#else
+let MSAA_SAMPLES = 64
+#endif
+
 typealias ImageSize = (w: UInt, h: UInt)
 
 public class RayTracer
@@ -35,12 +41,23 @@ public class RayTracer
 
         for x in 0..<self.imgSize.w
         {
-            let u   = Double(x) / Double(self.imgSize.w-1)
             for y in 0..<self.imgSize.h
             {
-                let v     = Double(y) / Double(self.imgSize.h-1)
-                var ray   = self.cam.get_ray(u:u, v:v)
-                let color = computeRay(&ray, minD: 0.0, maxD:10.0)
+                var color = Vec3.zero()
+                for _ in 0..<MSAA_SAMPLES
+                {
+                    let offset = (MSAA_SAMPLES > 1) ? Double.random(in: 0.0...1.0)
+                                                    : 0.0
+
+                    let u     = (Double(x) + offset) / Double(self.imgSize.w-1)
+                    let v     = (Double(y) + offset) / Double(self.imgSize.h-1)
+                    var ray   = self.cam.get_ray(u:u, v:v)
+
+                    color += computeRay(&ray, minD: 0.0, maxD:10.0)
+                }
+
+                // Gamma2 correction
+                color = (color * 1.0/Double(MSAA_SAMPLES)).squareRoot()
 
                 // NOTE: The image's top row has the higher Y position in world space!
                 img.set(col: x, row: self.imgSize.h-1-y, color: color)

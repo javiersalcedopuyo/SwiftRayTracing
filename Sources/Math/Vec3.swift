@@ -124,6 +124,13 @@ public struct Vec3 : Equatable
         left.z *= right.z
     }
 
+    public static func +=(left: inout Self, right: Self)
+    {
+        left.x += right.x
+        left.y += right.y
+        left.z += right.z
+    }
+
     public func dot(_ v: Vec3) -> Double
     {
         self.x * v.x + self.y * v.y + self.z * v.z
@@ -169,5 +176,14 @@ public struct Vec3 : Equatable
         self.x = min( max(self.x, minVal), maxVal )
         self.y = min( max(self.y, minVal), maxVal )
         self.z = min( max(self.z, minVal), maxVal )
+    }
+
+    public func squareRoot() -> Self
+    {
+        let x = self.x.squareRoot()
+        let y = self.y.squareRoot()
+        let z = self.z.squareRoot()
+
+        return Vec3(x:x, y:y, z:z)
     }
 }

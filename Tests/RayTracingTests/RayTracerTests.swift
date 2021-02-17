@@ -27,7 +27,10 @@ final class RayTracerTests: XCTestCase
         let image = rt.render()
         let pixel = image.at(col: 32, row: 32)
 
-        let EXPECTED_MIDDLE_COLOR = Pixel8(fromVec3: Vec3.lerp(from: Vec3.one(), to: SKY_COLOR_1, t: 0.5))
+        let EXPECTED_MIDDLE_COLOR = Pixel8( fromVec3: Vec3.lerp(from: Vec3.one(),
+                                                                to:   SKY_COLOR_1,
+                                                                t:    0.5)
+                                                        .squareRoot() )
 
         XCTAssert(comparePixel8s(a: pixel, b: EXPECTED_MIDDLE_COLOR, accuracy: COLOR_EPSILON),
                   "\(pixel) != \(EXPECTED_MIDDLE_COLOR) with accuracy \(COLOR_EPSILON)")
