@@ -23,7 +23,7 @@ let package = Package(
             dependencies: []),
         .target(
             name: "Utils",
-            dependencies: []),
+            dependencies: ["Math"]),
         .target(
             name: "RenderableObjects",
             dependencies: ["Math"]),
@@ -45,6 +45,6 @@ let package = Package(
             dependencies: ["Math"]),
         .testTarget(
             name: "UtilsTests",
-            dependencies: ["Utils"])
+            dependencies: ["Utils", "Math"])
     ]
 )
