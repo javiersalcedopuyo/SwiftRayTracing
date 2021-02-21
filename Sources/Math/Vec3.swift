@@ -1,5 +1,12 @@
 import Foundation // For trigonometric functions
 
+public let RED   = Vec3(x:1.0, y:0.0, z:0.0)
+public let GREEN = Vec3(x:0.0, y:1.0, z:0.0)
+public let BLUE  = Vec3(x:0.0, y:0.0, z:1.0)
+public let WHITE = Vec3(x:1.0, y:1.0, z:1.0)
+public let GREY  = Vec3(x:0.5, y:0.5, z:0.5)
+public let BLACK = Vec3(x:0.0, y:0.0, z:0.0)
+
 public struct Vec3 : Equatable
 {
     public var x: Double
@@ -197,5 +204,16 @@ public struct Vec3 : Equatable
     public func reflect(normal: Vec3) -> Vec3
     {
         return self - normal * self.dot(normal) * 2;
+    }
+
+    // n: Surface normal
+    // eta: Refraction index of the first medium over the second's (ni/nr)
+    public func refract(normal: Vec3, eta: Double) -> Vec3
+    {
+        let cosTheta    = -self.dot(normal)
+        let rOrthogonal = (self + normal * cosTheta) * eta
+        let rParallel   = normal * -abs(1.0 - rOrthogonal.norm2()).squareRoot()
+
+        return rOrthogonal + rParallel
     }
 }
