@@ -7,6 +7,18 @@ public let WHITE = Vec3(x:1.0, y:1.0, z:1.0)
 public let GREY  = Vec3(x:0.5, y:0.5, z:0.5)
 public let BLACK = Vec3(x:0.0, y:0.0, z:0.0)
 
+#if DEBUG
+// Helper function for the tests
+public func compareVec3WithAccuracy(_ a: Vec3, _ b: Vec3, accuracy: Double) -> Bool
+{
+    let x = abs(a.x - b.x)
+    let y = abs(a.y - b.y)
+    let z = abs(a.z - b.z)
+
+    return x<=accuracy && y<=accuracy && z<=accuracy
+}
+#endif
+
 public struct Vec3 : Equatable
 {
     public var x: Double

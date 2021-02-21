@@ -51,7 +51,7 @@ public class RayTracer
 
                     let u     = (Double(x) + offset) / Double(self.imgSize.w-1)
                     let v     = (Double(y) + offset) / Double(self.imgSize.h-1)
-                    var ray   = self.cam.get_ray(u:u, v:v)
+                    var ray   = self.cam.getRay(u:u, v:v)
 
                     color += computeRay(&ray, minD: 0.0, maxD:10.0)
                 }

@@ -1,5 +1,15 @@
 public let TAU = Double.pi * 2.0
 
+public func rad2deg(_ r: Double) -> Double
+{
+    return r * 360.0 / TAU
+}
+
+public func deg2rad(_ d: Double) -> Double
+{
+    return d * TAU / 360.0
+}
+
 public func randomPointInUnitSphere() -> Vec3
 {
     while true

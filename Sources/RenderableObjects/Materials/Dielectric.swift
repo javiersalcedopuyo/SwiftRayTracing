@@ -38,16 +38,10 @@ public class Dielectric : Material
 
         ioAttenuation   = self.albedo
 
-        if eta * sinTheta > 1.0 || Double.random(in: 0...1) < reflectProb
-        {
-            // The ray didn't get into the surface! Reflect it.
-            let resultingRayDir = iRay.direction.reflect(normal: iHit.normal)
-            if resultingRayDir.dot(iHit.normal) <= 0 { return nil }
+        let resultingRayDir = eta * sinTheta > 1.0 || Double.random(in: 0...1) < reflectProb
+                                ? iRay.direction.reflect(normal: iHit.normal)
+                                : iRay.direction.refract(normal: iHit.normal, eta: eta)
 
-            return Ray(origin: iHit.position, direction: resultingRayDir)
-        }
-
-        let resultingRayDir = iRay.direction.refract(normal: iHit.normal, eta: eta)
         return Ray(origin: iHit.position, direction: resultingRayDir)
     }
 }

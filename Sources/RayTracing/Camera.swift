@@ -2,6 +2,8 @@ import Math
 
 typealias Dimensions = (w: Double, h: Double)
 
+let WORLD_UP = Vec3(x:0.0, y:1.0, z:0.0)
+
 public class Camera
 {
     public private(set) var position:          Vec3
@@ -28,21 +30,27 @@ public class Camera
         self.right   = Vec3(x:-1.0, y:0.0, z:0.0)
         self.forward = Vec3(x:0.0, y:0.0, z:1.0)
 
-        self.update_lower_left_corner()
+        self.updateLowerLeftCorner()
     }
 
-    public func move_to(_ inNewPos: Vec3)
+    public func moveTo(_ inNewPos: Vec3)
     {
         self.position = inNewPos;
-        self.update_lower_left_corner()
+        self.updateLowerLeftCorner()
     }
 
-    public func look_at(_ iTarget: Vec3)
+    public func lookAt(_ iTarget: Vec3)
     {
-        // TODO:
+        let lookDir  = (iTarget - self.position).normalized()
+
+        self.forward = lookDir
+        self.right   = lookDir.cross(WORLD_UP).normalized()
+        self.up      = self.right.cross(lookDir)
+
+        self.updateLowerLeftCorner()
     }
 
-    public func get_ray(u: Double, v: Double) -> Ray
+    public func getRay(u: Double, v: Double) -> Ray
     {
         let hrz = self.right * self.viewport.w
         let vrt = self.up    * self.viewport.h
@@ -52,7 +60,7 @@ public class Camera
         return Ray(origin: self.position, direction: pixel_pos - self.position)
     }
 
-    func update_lower_left_corner()
+    func updateLowerLeftCorner()
     {
         let hrz = self.right  * self.viewport.w
         let vrt = self.up      * self.viewport.h
