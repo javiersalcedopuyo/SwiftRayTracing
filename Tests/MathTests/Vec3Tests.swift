@@ -59,4 +59,13 @@ final class Vec3Tests: XCTestCase
         let a = Vec3.zero()
         XCTAssertEqual(a.normalized(), Vec3.zero())
     }
+
+    func testReflect()
+    {
+        let v = Vec3.random(min: 0.0, max: 1.0)
+        let n = Vec3.randomUnit()
+        let r = v.reflect(normal: n)
+
+        XCTAssertEqual(r.dot(n), -v.dot(n), accuracy: 0.001)
+    }
 }

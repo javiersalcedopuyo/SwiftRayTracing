@@ -74,18 +74,18 @@ public class RayTracer
 
     func computeRay(_ iRay: inout Ray, minD iMinDist: Double, maxD iMaxDist: Double) -> Vec3
     {
-        var ray    = iRay
+        var ray: Ray? = iRay
         var depth  = MAX_DEPTH
         var result = Vec3.one()
 
-        while depth > 0
+        while depth > 0 && ray != nil
         {
             var closestHit: HitRecord? = nil
             var maxD = FAR
 
             for obj in world
             {
-                let hit = obj.hit(ray: ray, minD: SHADOW_BIAS, maxD: maxD)
+                let hit = obj.hit(ray: ray!, minD: SHADOW_BIAS, maxD: maxD)
 
                 if hit == nil { continue }
                 if closestHit == nil { closestHit = hit }
@@ -95,13 +95,16 @@ public class RayTracer
                 maxD = closestHit!.distance
             }
 
-            if closestHit == nil { return result * sampleSkybox(ray: ray) }
+            if closestHit == nil { return result * sampleSkybox(ray: ray!) }
 
             var attenuation = Vec3.one()
             ray = closestHit!.material
-                             .scatter(ray: ray,
+                             .scatter(ray: ray!,
                                      hit: closestHit!,
                                      attenuation: &attenuation)
+
+            if ray == nil { return result * sampleSkybox(ray: ray!) }
+
             result *= attenuation
             depth  -= 1
         }

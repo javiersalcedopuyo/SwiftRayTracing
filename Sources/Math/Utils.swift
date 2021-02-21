@@ -9,3 +9,9 @@ public func randomPointInUnitSphere() -> Vec3
         return p
     }
 }
+
+public func randomPointInUnitHemisphere(normal: Vec3) -> Vec3
+{
+    let result = randomPointInUnitSphere()
+    return result.dot(normal) > 0.0 ? result : -result
+}

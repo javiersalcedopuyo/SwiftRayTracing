@@ -8,5 +8,5 @@ public protocol Material : AnyObject
     func scatter(ray iRay: Ray,
                  hit iHit: HitRecord,
                  attenuation iAttenuation: inout Vec3)
-    -> Ray
+    -> Ray?
 }

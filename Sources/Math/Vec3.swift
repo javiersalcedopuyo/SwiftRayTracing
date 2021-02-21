@@ -6,6 +6,8 @@ public struct Vec3 : Equatable
     public var y: Double
     public var z: Double
 
+    let EPSILON = 1e-8
+
     // Initializers
     public init(x: Double, y: Double, z: Double)
     {
@@ -185,5 +187,15 @@ public struct Vec3 : Equatable
         let z = self.z.squareRoot()
 
         return Vec3(x:x, y:y, z:z)
+    }
+
+    public func isNearZero() -> Bool
+    {
+        return abs(self.x) < EPSILON || abs(self.y) < EPSILON || abs(self.z) < EPSILON
+    }
+
+    public func reflect(normal: Vec3) -> Vec3
+    {
+        return self - normal * self.dot(normal) * 2;
     }
 }
