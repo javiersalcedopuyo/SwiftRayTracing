@@ -2,9 +2,9 @@ import Utils
 import Math
 import RenderableObjects
 
-let SKY_COLOR_1    = Vec3(x: 0.0, y: 0.3, z: 1.0)
+let SKY_COLOR_1    = Vec3(x: 0.5, y: 0.7, z: 1.0)
 let MAX_DEPTH: Int = 50
-let FAR            = 10.0
+let FAR            = 100.0
 let SHADOW_BIAS    = 0.001
 
 #if DEBUG
@@ -35,12 +35,18 @@ public class RayTracer
         self.world.append(input)
     }
 
+    public func setWorld(_ w: Array<Intersectionable>) { self.world = w }
+
     public func render() -> ImagePPM
     {
         let img = ImagePPM(width: self.imgSize.w, height: self.imgSize.h)
 
         for x in 0..<self.imgSize.w
         {
+#if DEBUG
+            let percentage = UInt(Double(x) / Double(self.imgSize.w) * 100.0)
+            print("\(percentage)%")
+#endif
             for y in 0..<self.imgSize.h
             {
                 var color = Vec3.zero()
@@ -102,8 +108,6 @@ public class RayTracer
                              .scatter(ray: ray!,
                                      hit: closestHit!,
                                      attenuation: &attenuation)
-
-            if ray == nil { return result * sampleSkybox(ray: ray!) }
 
             result *= attenuation
             depth  -= 1

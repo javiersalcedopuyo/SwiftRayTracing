@@ -22,11 +22,11 @@ let package = Package(
             name: "Math",
             dependencies: []),
         .target(
-            name: "Utils",
-            dependencies: ["Math"]),
-        .target(
             name: "RenderableObjects",
             dependencies: ["Math"]),
+        .target(
+            name: "Utils",
+            dependencies: ["Math", "RenderableObjects"]),
         .target(
             name: "RayTracing",
             dependencies: ["RenderableObjects", "Math", "Utils"]),

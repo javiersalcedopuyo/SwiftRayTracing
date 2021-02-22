@@ -45,6 +45,12 @@ public class Camera
         self.updateLowerLeftCorner()
     }
 
+    public func updateFocusDistance(new: Double)
+    {
+        self.focusDistance = new
+        self.updateLowerLeftCorner()
+    }
+
     public func lookAt(_ iTarget: Vec3)
     {
         let lookDir        = (iTarget - self.position).normalized()

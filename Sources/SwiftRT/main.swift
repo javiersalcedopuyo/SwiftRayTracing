@@ -7,23 +7,21 @@ import RenderableObjects
 
 let rt = RayTracer(w:800, h:600)
 
-rt.cam.moveTo( Vec3(x:-1.5, y:0.5, z:0.25) )
-rt.cam.lookAt( Vec3(x:0.0, y:0.0, z:1.5) )
+//rt.cam.moveTo( Vec3(x:-1.5, y:0.5, z:0.25) )
+//rt.cam.lookAt( Vec3(x:0.0, y:0.0, z:1.5) )
+//rt.setWorld( SceneGenerator.rgb() )
 
-let groundMat   = Lambertian(albedo: GREY)
-let diffuseMat  = Lambertian(albedo: RED)
-let glassMat    = Dielectric(albedo: GREEN, refractionIdx: 1.5)
-let metallicMat = Metallic  (albedo: BLUE,  roughness:     0.5)
+rt.cam.moveTo( Vec3(x:5, y:1.5, z:2.5))
+rt.cam.lookAt( Vec3.zero() )
+rt.cam.updateFocusDistance(new: 10.0)
+print("Camera set")
 
-rt.addObject( Sphere(pos: Vec3(x:1.0,  y:0.0, z:1.5), rad: 0.5, mat: diffuseMat) )
-rt.addObject( Sphere(pos: Vec3(x:0.0,  y:0.0, z:1.5), rad: 0.5, mat: glassMat) )
-rt.addObject( Sphere(pos: Vec3(x:-1.0, y:0.0, z:1.5), rad: 0.5, mat: metallicMat) )
-// "Floor"
-rt.addObject( Sphere(pos: Vec3(x:0.0, y:-100.5, z:2.0), rad: 100.0, mat: groundMat) )
+rt.setWorld( SceneGenerator.rand() )
+print("World created")
 
 let start = Date()
 print("Render started!")
 let image = rt.render()
-print("Rendered finished in", start.timeIntervalSinceNow * -1000.0, "ms")
+print("Rendered finished in", start.timeIntervalSinceNow * -1, "s")
 
 image.writeToFile(at: "Out/result.ppm")
