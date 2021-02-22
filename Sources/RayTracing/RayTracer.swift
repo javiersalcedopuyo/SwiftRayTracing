@@ -26,7 +26,7 @@ public class RayTracer
     {
         self.imgSize.w = w
         self.imgSize.h = h
-        self.cam       = Camera(w:w, h:h)
+        self.cam       = Camera(w:w, h:h, aperture: 0.1)
         self.world     = Array<Intersectionable>()
     }
 
